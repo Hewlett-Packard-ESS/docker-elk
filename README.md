@@ -1,8 +1,9 @@
-## hpess/logstash
-This container builds on hpess/jre by adding Logstash. Currently installing logstash 1.4.2
-
-## Use
-Provides Logstash application deployment. Logstash configuration is defined in the storage logstash.conf file
+## hpess/elk
+This provides fig configuration to spin up the ELK stack.
+The configuration is made up of the following docker images;
+*hpess/elasticsearch
+*hpess/logstash
+*hpess/kibana
 
 
 ## License
