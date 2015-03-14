@@ -7,7 +7,5 @@ The configuration is made up of the following docker images;
   - [hpess/logstash](https://github.com/Hewlett-Packard-ESS/docker-logstash)
   - [hpess/kibana](https://github.com/Hewlett-Packard-ESS/docker-kibana)
 
-
-
 ## License
 Each of the components have their own licences in place, visit the links above to see them.
