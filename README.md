@@ -11,17 +11,17 @@ We also have a `logstash forwarder`, which is configured to read everything in /
 ## To run it
 Simply type `docker-compose up -d`, it takes around 10 seconds on my laptop for everything to come up, cluster, and start talking to eachother, key urls once it's done are:
 
-  - http://127.0.0.1:8080       # HA Proxy
-  - http://127.0.0.1:9200		# Elasticsearch
-  - http://127.0.0.1:5601		# Kibana
+  - http://127.0.0.1:8080/stats					# HA Proxy
+  - http://127.0.0.1:9200/_plugin/head			# Elasticsearch
+  - http://127.0.0.1:5601						# Kibana
 
 ## Composing Containers
 The configuration is made up of the following docker images:
-  - [hpess/haproxy](https://github.com/Hewlett-Packard-ESS/docker-haproxy)
   - [hpess/elasticsearch](https://github.com/Hewlett-Packard-ESS/docker-elasticsearch)
   - [hpess/kibana](https://github.com/Hewlett-Packard-ESS/docker-kibana)
   - [hpess/logstash](https://github.com/Hewlett-Packard-ESS/docker-logstash)
   - [hpess/logstash-forwarder](https://github.com/Hewlett-Packard-ESS/docker-logstash-forwarder)
+  - [hpess/haproxy](https://github.com/Hewlett-Packard-ESS/docker-haproxy)
 
 ## License
 Each of the containers are licensed under the [MIT](/LICENSE-MIT) license.
