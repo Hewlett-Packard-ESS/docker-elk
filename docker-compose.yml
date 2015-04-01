@@ -20,7 +20,6 @@ haproxy1:
     - "/etc/localtime:/etc/localtime:ro"
   ports:
     - "8080:8080/tcp"   # Logstash Stats
-    - "9300:9300/tcp"   # Elasticsearch
     - "9200:9200/tcp"   # Elasticsearch
     - "5601:5601/tcp"   # Kibana
     - "1337:1337/tcp"   # Logstash, TCP, Lumberjack
