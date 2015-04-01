@@ -1,30 +1,81 @@
-elasticsearch:
-    image: hpess/elasticsearch
-    hostname: elasticsearch
-    privileged: true
-    environment:
-        node_name: 'elk_stack'
-    ports:
-        - "9200:9200/tcp"
-        - "9300:9300/tcp"
+logstashfw:
+  image: hpess/logstash-forwarder:master
+  environment:
+    logstash_ip: 'logstash'
+    logstash_port: 1337
+    logstash_cn: 'logstash'
+  volumes:
+    - "./storage/logstash_forwarder:/storage"
+    - "/var/log:/logs:ro"
+  links:
+    - "haproxy1:logstash"
 
-logstash:
-    image: hpess/logstash
-    hostname: logstash
-    environment:
-        elastic_url: 'http://elasticsearch:9200'
-    ports:
-        - "9303:9303/udp"
-    links:
-        - "elasticsearch:elasticsearch"      
-kibana:
-    image: hpess/kibana
-    hostname: kibana
-    environment:
-        elastic_url: 'http://elasticsearch:9200'
-    ports:
-        - "5601:5601"
-    links:
-        - "elasticsearch:elasticsearch"
+haproxy1:
+  image: hpess/haproxy:master
+  restart: always
+  hostname: haproxy1
+  volumes:
+    - ./storage/haproxy:/storage
+  ports:
+    - "8080:8080/tcp"   # Logstash Stats
+    - "9300:9300/tcp"   # Elasticsearch
+    - "9200:9200/tcp"   # Elasticsearch
+    - "5601:5601/tcp"   # Kibana
+    - "1337:1337/tcp"   # Logstash, TCP, Lumberjack
+  links:
+    - "elasticsearch1"
+    - "elasticsearch2"
+    - "elasticsearch3"
+    - "logstash1"
+    - "logstash2"
+    - "kibana1"
 
+elasticsearch1:
+  image: hpess/elasticsearch:master
+  restart: always
+  hostname: elasticsearch1
+  privileged: true
+  environment:
+    cluster_name: 'hp'
+    node_name: 'es1'
 
+elasticsearch2:
+  image: hpess/elasticsearch:master
+  restart: always
+  hostname: elasticsearch2
+  privileged: true
+  environment:
+    cluster_name: 'hp'
+    node_name: 'es2'
+
+elasticsearch3:
+  image: hpess/elasticsearch:master
+  restart: always
+  hostname: elasticsearch3
+  privileged: true
+  environment:
+    cluster_name: 'hp'
+    node_name: 'es3'
+
+logstash1:
+  image: hpess/logstash:master
+  restart: always
+  hostname: logstash1
+  volumes:
+    - ./storage/logstash:/storage
+
+logstash2:
+  image: hpess/logstash:master
+  restart: always
+  hostname: logstash1
+  volumes:
+    - ./storage/logstash:/storage
+
+kibana1:
+  image: hpess/kibana:master
+  restart: always
+  hostname: kibana1
+  environment:
+    elastic_url: 'http://172.17.42.1:9200'
+  volumes:
+    - ./storage/logstash:/storage
