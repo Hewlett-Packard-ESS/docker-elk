@@ -6,6 +6,7 @@ logstashfw:
     logstash_cn: 'logstash'
   volumes:
     - "./storage/logstash_forwarder:/storage"
+    - "/etc/localtime:/etc/localtime:ro"
     - "/var/log:/logs:ro"
   links:
     - "haproxy1:logstash"
@@ -15,7 +16,8 @@ haproxy1:
   restart: always
   hostname: haproxy1
   volumes:
-    - ./storage/haproxy:/storage
+    - "./storage/haproxy:/storage"
+    - "/etc/localtime:/etc/localtime:ro"
   ports:
     - "8080:8080/tcp"   # Logstash Stats
     - "9300:9300/tcp"   # Elasticsearch
@@ -26,15 +28,19 @@ haproxy1:
     - "elasticsearch1"
     - "elasticsearch2"
     - "elasticsearch3"
+    - "elasticsearch4"
     - "logstash1"
     - "logstash2"
     - "kibana1"
+    - "kibana2"
 
 elasticsearch1:
   image: hpess/elasticsearch:master
   restart: always
   hostname: elasticsearch1
   privileged: true
+  volumes:
+    - "/etc/localtime:/etc/localtime:ro"
   environment:
     cluster_name: 'hp'
     node_name: 'es1'
@@ -44,6 +50,8 @@ elasticsearch2:
   restart: always
   hostname: elasticsearch2
   privileged: true
+  volumes:
+    - "/etc/localtime:/etc/localtime:ro"
   environment:
     cluster_name: 'hp'
     node_name: 'es2'
@@ -53,23 +61,38 @@ elasticsearch3:
   restart: always
   hostname: elasticsearch3
   privileged: true
+  volumes:
+    - "/etc/localtime:/etc/localtime:ro"
   environment:
     cluster_name: 'hp'
     node_name: 'es3'
+
+elasticsearch4:
+  image: hpess/elasticsearch:master
+  restart: always
+  hostname: elasticsearch4
+  privileged: true
+  volumes:
+    - "/etc/localtime:/etc/localtime:ro"
+  environment:
+    cluster_name: 'hp'
+    node_name: 'es4'
 
 logstash1:
   image: hpess/logstash:master
   restart: always
   hostname: logstash1
   volumes:
-    - ./storage/logstash:/storage
+    - "./storage/logstash:/storage"
+    - "/etc/localtime:/etc/localtime:ro"
 
 logstash2:
   image: hpess/logstash:master
   restart: always
   hostname: logstash1
   volumes:
-    - ./storage/logstash:/storage
+    - "./storage/logstash:/storage"
+    - "/etc/localtime:/etc/localtime:ro"
 
 kibana1:
   image: hpess/kibana:master
@@ -78,4 +101,15 @@ kibana1:
   environment:
     elastic_url: 'http://172.17.42.1:9200'
   volumes:
-    - ./storage/logstash:/storage
+    - "./storage/logstash:/storage"
+    - "/etc/localtime:/etc/localtime:ro"
+
+kibana2:
+  image: hpess/kibana:master
+  restart: always
+  hostname: kibana2
+  environment:
+    elastic_url: 'http://172.17.42.1:9200'
+  volumes:
+    - "./storage/logstash:/storage"
+    - "/etc/localtime:/etc/localtime:ro"
