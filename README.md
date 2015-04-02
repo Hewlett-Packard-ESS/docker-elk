@@ -6,7 +6,7 @@ The benefit here is because all of these containers are based from the same set 
 ## Configuration
 By default, the docker-compose file creates 4 `elasticsearch` nodes, 2 `logstash` nodes, and 2 `kibana` nodes.  These are load balanced using `haproxy`.
 
-We also have a `logstash forwarder`, which is configured to read everything in /var/log, and send this via TCP to `loadstash`, just as an example of how to get data in.
+We also have a `logstash forwarder`, which is configured to read everything in /var/log, and send this via TCP to `logstash`, just as an example of how to get data in.
 
 ## To run it
 Simply type `docker-compose up -d`, it takes around 10 seconds on my laptop for everything to come up, cluster, and start talking to eachother, key urls once it's done are:
