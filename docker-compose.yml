@@ -1,16 +1,3 @@
-logstashfw:
-  image: hpess/logstash-forwarder:master
-  environment:
-    logstash_ip: 'logstash'
-    logstash_port: 1337
-    logstash_cn: 'logstash'
-  volumes:
-    - "./storage/logstash_forwarder:/storage"
-    - "/etc/localtime:/etc/localtime:ro"
-    - "/var/log:/logs:ro"
-  links:
-    - "haproxy1:logstash"
-
 haproxy1:
   image: hpess/haproxy:master
   restart: always
@@ -40,6 +27,7 @@ elasticsearch1:
   privileged: true
   volumes:
     - "/etc/localtime:/etc/localtime:ro"
+    - "./storage/es1:/storage"
   environment:
     cluster_name: 'hp'
     node_name: 'es1'
@@ -51,6 +39,7 @@ elasticsearch2:
   privileged: true
   volumes:
     - "/etc/localtime:/etc/localtime:ro"
+    - "./storage/es2:/storage"
   environment:
     cluster_name: 'hp'
     node_name: 'es2'
@@ -62,6 +51,7 @@ elasticsearch3:
   privileged: true
   volumes:
     - "/etc/localtime:/etc/localtime:ro"
+    - "./storage/es3:/storage"
   environment:
     cluster_name: 'hp'
     node_name: 'es3'
@@ -73,6 +63,7 @@ elasticsearch4:
   privileged: true
   volumes:
     - "/etc/localtime:/etc/localtime:ro"
+    - "./storage/es4:/storage"
   environment:
     cluster_name: 'hp'
     node_name: 'es4'
