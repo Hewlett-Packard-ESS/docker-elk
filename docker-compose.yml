@@ -70,7 +70,7 @@ elasticsearch4:
     node_name: 'es4'
 
 logstash1:
-  image: hpess/logstash:master
+  build: ./cef
   restart: always
   hostname: logstash1
   volumes:
@@ -78,7 +78,7 @@ logstash1:
     - "/etc/localtime:/etc/localtime:ro"
 
 logstash2:
-  image: hpess/logstash:master
+  build: ./cef
   restart: always
   hostname: logstash1
   volumes:
